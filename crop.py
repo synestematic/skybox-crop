@@ -90,11 +90,17 @@ class CrossImage(SkyboxImage):
         '3up', '2lf', '5bk', '1rt', '6ft', '4dn', 
     )
 
-def main():
-    sky = CrossImage('/home/user/kiss.png')
-    sky.crop_by_sections()
-    # spc = StraightImage('/home/user/space.png')
-    # spc.crop_by_sections()
+
+@click.command()
+@click.argument('source_image')
+@click.option(
+    '-i', '--img-type',
+    type=click.Choice(['cross', 'straight']),
+    default='cross'
+)
+def main(source_image, img_type):
+    ImageClass = StraightImage if img_type == 'straight' else CrossImage
+    ImageClass(source_image).crop_by_sections()
 
 
 if __name__ == '__main__':
